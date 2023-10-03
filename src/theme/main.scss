@@ -1,0 +1,51 @@
+@import 'bootstrap/scss/bootstrap';
+
+.image-card {
+    width: 100%;
+    background: bisque;
+    position: relative;
+    overflow: hidden;
+    img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        transition: all 0.25s ease-in;
+    }
+    .context-menu-top {
+        top: 10px;
+        right: 10px;
+        position: absolute;
+        transform: translateY(-200%);
+        transition: all 0.25s ease-in;
+        // button {
+        //     background-color:scale-color($color:gray,$alpha: -50%);
+        //     border: none;
+        //     border-radius: 10px;
+        // }
+    }
+    .context-menu-bottom {
+        bottom: 10px;
+        left: 10px;
+        position: absolute;
+        transform: translateY(200%);
+        transition: all 0.25s ease-in;
+    }
+    .context-menu-bottom, .context-menu-top {
+        button svg {
+            margin: 5px;
+        }
+    }
+    &:hover {
+        .context-menu-top,
+        .context-menu-bottom {
+            transform: translateY(0);
+            -webkit-transform: translateY(0);
+            -moz-transform: translateY(0);
+            -ms-transform: translateY(0);
+            -o-transform: translateY(0);
+        }
+        img {
+            scale: 1.1;
+        }
+    }
+}
