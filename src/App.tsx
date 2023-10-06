@@ -1,23 +1,32 @@
-import { useState, useEffect } from "react";
+
 import "./theme/main.scss";
 import "react-multi-carousel/lib/styles.css";
 
-import MainNavbar from "./components/MainNavbar";
 import Home from "./pages/Home";
-import ImageDetail from "./pages/ImageDetail";
-import AddImageForm from "./components/AddImageForm";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import RouterError from "./errors/RouterError";
+import PageNotFoundError from "./errors/PageNotFoundError";
+import Categories from "./pages/Categories";
+import Images from "./pages/Images";
+import Tags from "./pages/Tags";
+import Models from "./pages/Models";
 
 function App() {
   return (
     <>
-      <MainNavbar />
-
-      <hr />
-      <main className="bg-body-tertiary">
-        {/* <Home /> 
-        <ImageDetail />*/}
-        <AddImageForm />
-      </main>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainLayout/>}  errorElement={<RouterError/>} >
+              <Route index={true} path="/home" element={<Home/>}/>
+              <Route path="/categories" element={<Categories/>}/>
+              <Route path="/models" element={<Models/>}/>
+              <Route path="/images" element={<Images/>}/>
+              <Route path="/tags" element={<Tags/>}/>
+            </Route>
+            <Route path="*" element={<PageNotFoundError/>} />
+          </Routes>
+        </BrowserRouter>
     </>
   );
 }

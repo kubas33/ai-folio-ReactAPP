@@ -1,23 +1,19 @@
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, Flex, HStack, IconButton, ListItem, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, UnorderedList, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
-import React from 'react'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import { Link as LinkProps } from '@chakra-ui/react'
 
+const Links: string[] = ['Home', 'Models', 'Images', 'Tags', 'Categories'];
 
-interface Props {
-    children: React.ReactNode
-}
-
-const Links: string[] = ['Home', 'Models', 'Images', 'Tag', 'Categories'];
-
-const NavLink = (props: Props) => {
+const NavLink = (props: LinkProps) => {
     const {children} = props;
 
     return (
-      <Box as='a' px={2}  py={1} rounded={'md'} _hover={{
+      <Box as={ReactRouterLink} px={2}  py={1} rounded={'md'} _hover={{
         textDecoration: 'none',
         bg: useColorModeValue('gray.300', 'gray.600'),
         fontWeight: '500',
-      }} href='#'>
+      }} to={`/${(typeof children === 'string') ? children.toLowerCase() : '#'}`}>
         {children}
       </Box>
     )
@@ -37,8 +33,8 @@ function MainNavbar() {
               <HStack as={'nav'}  spacing={4} display={{base: 'none', md: 'flex'}}>
                 <UnorderedList listStyleType={'none'} m={0}>
                   {Links.map( link => (
-                    <ListItem display={'inline-list-item'} px={2}>
-                      <NavLink key={link}>{link}</NavLink>
+                    <ListItem key={link} display={'inline-list-item'} px={2}>
+                      <NavLink>{link}</NavLink>
                     </ListItem>
                   ))}
                 </UnorderedList>
