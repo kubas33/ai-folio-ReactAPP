@@ -11,6 +11,8 @@ import Categories from "./pages/Categories";
 import Images from "./pages/Images";
 import Tags from "./pages/Tags";
 import Models from "./pages/Models";
+import AddImageForm from "./components/AddImageForm";
+import AddImageFormBS from "./components/AddImageFormBS";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
               <Route path="/models" element={<Models/>}/>
               <Route path="/images" element={<Images/>}/>
               <Route path="/tags" element={<Tags/>}/>
+              <Route path="/addbs" element={<AddImageFormBS/>}/>
+              <Route path="/add" element={<AddImageForm/>}/>
             </Route>
             <Route path="*" element={<PageNotFoundError/>} />
           </Routes>
