@@ -3,6 +3,7 @@ import ImageCard from "../components/ImageCard";
 import { Container, Row } from "react-bootstrap";
 import ImagesCarousel from "../components/ImagesCarousel";
 import CategoryProps from "../interfaces/CategoryProps";
+import { Box, Center, SimpleGrid } from "@chakra-ui/react";
 
 interface LoadedImage {
   fileName: string;
@@ -86,21 +87,19 @@ export default function Home() {
     ]);
   }, []);
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-12 text-center">
+    <>
+      <Center as='section'>
+        <Center maxWidth={"1440px"} flexDirection={'column'}>
           <h1>AiFolio</h1>
-        </div>
-      </div>
-      <Container>
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
-          {images.map((image) => (
-            <ImageCard fileName={image.fileName} key={image.fileName} />
-          ))}
-        </div>
-      </Container>
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={4}>
+            {images.map((image) => (
+              <ImageCard fileName={image.fileName} key={image.fileName} />
+            ))}
+          </SimpleGrid>
+        </Center >
+      </Center>
       <hr />
-      <section className="categories-preview">
+      <Box as='section' className="categories-preview">
         {categories.map((category) => (
           <Fragment key={category.slug}>
             <h3>{category.name}</h3>
@@ -108,7 +107,7 @@ export default function Home() {
             <hr />
           </Fragment>
         ))}
-      </section>
-    </div>
+      </Box>
+    </>
   );
 }
