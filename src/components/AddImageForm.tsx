@@ -1,23 +1,28 @@
 import {
   Box,
   Center,
-  Container,
   FormControl,
+  FormLabel,
   Grid,
   GridItem,
   Image,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   SimpleGrid,
   Slider,
   SliderFilledTrack,
-  SliderMark,
   SliderThumb,
   SliderTrack,
+  Textarea,
   Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FormLabel } from "react-bootstrap";
 import { FileUploader } from "react-drag-drop-files";
 
 const fileTypes = ["JPEG", "PNG"];
@@ -33,7 +38,7 @@ function SliderThumbWithTooltip({ minValue, maxValue, id }: SliderThumbWithToolt
   const [showTooltip, setShowTooltip] = useState(false)
   return (
     <Slider
-      id = {id}
+      id={id}
       defaultValue={10}
       min={minValue}
       max={maxValue}
@@ -77,17 +82,19 @@ export default function AddImageForm() {
   return (
     <Box as={"form"} className="add-image-form" p={10}>
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={10} marginBottom={4}>
-        <Center>
+        <Center flexDirection={'column'} my={'auto'}>
           <FormControl>
-            <FileUploader
-              multiple={false}
-              handleChange={handleChange}
-              name="file"
-              types={fileTypes}
-            />
-            <p className="mt-3 px-4">
-              {file ? `File name: ${file.name}` : "no file uploaded yet"}
-            </p>
+            <Center flexDirection={'column'} my={'auto'}>
+              <FileUploader
+                multiple={false}
+                handleChange={handleChange}
+                name="file"
+                types={fileTypes}
+              />
+              <p className="mt-3 px-4">
+                {file ? `File name: ${file.name}` : "no file uploaded yet"}
+              </p>
+            </Center>
           </FormControl>
         </Center>
         <Center bg={useColorModeValue("gray.100", "gray.900")} p={4}>
@@ -126,21 +133,38 @@ export default function AddImageForm() {
           <option value="sampler_3">sampler 3</option>
         </Select>
       </SimpleGrid>
-      <Grid templateColumns={{base: '1fr', sm:'repeat(2, 1fr)', md:'repeat(3, 1fr)'}}
-      templateRows={{base: 'repeat(3, 1fr)', sm:'repeat(2, 1fr)', md:'1fr'}} gap={4}>
+      <Grid templateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+        templateRows={{ base: 'repeat(3, 1fr)', sm: 'repeat(2, 1fr)', md: '1fr' }} gap={{ base: 4, md: 8 }}
+        marginBottom={4}>
         <GridItem>
           <FormControl>
             <FormLabel>CGF Scale</FormLabel>
-            <SliderThumbWithTooltip minValue={1} maxValue={20} id="cgf_scale"/>
+            <SliderThumbWithTooltip minValue={1} maxValue={20} id="cgf_scale" />
           </FormControl>
         </GridItem>
         <GridItem>
           <FormControl>
             <FormLabel>Steps</FormLabel>
+            <NumberInput step={5} defaultValue={25} min={5} max={150}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
           </FormControl>
         </GridItem>
-        <GridItem></GridItem>
+        <GridItem colSpan={{ sm: 2, md: 1 }}>
+          <FormControl>
+            <FormLabel>Seed</FormLabel>
+            <Input />
+          </FormControl>
+        </GridItem>
       </Grid>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacingX={4} spacingY={2}>
+        <Textarea placeholder='Positive prompt' />
+        <Textarea placeholder='Negative prompt' />
+      </SimpleGrid>
     </Box>
   );
 }
