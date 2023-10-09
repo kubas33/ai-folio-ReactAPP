@@ -1,7 +1,10 @@
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Center, Container, Flex, HStack, IconButton, ListItem, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, UnorderedList, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Avatar, Box, Button, Center, Container, Flex, HStack, IconButton, ListItem, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, Text, UnorderedList, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Link as LinkProps } from '@chakra-ui/react'
+import { AuthState, logout } from '../store/authSlice';
+import { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Links: string[] = ['Home', 'Models', 'Images', 'Tags', 'Categories'];
 
@@ -20,9 +23,13 @@ const NavLink = (props: LinkProps) => {
 }
 
 function MainNavbar() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode()
-
+  const { email }: AuthState = useSelector((state: RootState) => state.auth);
+  const handleLogout = () => {
+    dispatch(logout());
+  }
   return (
     <>
       <Box as={"header"} bg={useColorModeValue('gray.100', 'gray.900')} px={4} >
@@ -52,13 +59,21 @@ function MainNavbar() {
                       size={'sm'}
                       src={'https://avatars.dicebear.com/api/male/username.svg'}
                     />
+
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>Settings</MenuItem>
-                    <MenuItem>Smth</MenuItem>
-                    <MenuDivider />
-                    <MenuItem>Logout</MenuItem>
+                    {email ? (
+                      <>
+                        <Text marginTop={2} textAlign={"center"}>{email}</Text>
+                        <MenuDivider />
+                        <MenuItem>Profile</MenuItem>
+                        <MenuItem>Settings</MenuItem>
+                        <MenuItem>Smth</MenuItem>
+                        <MenuDivider />
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      </>
+                    ) : <>
+                      <MenuItem as={ReactRouterLink} to={'/login'}>Login</MenuItem></>}
                   </MenuList>
                 </Menu>
               </HStack>
