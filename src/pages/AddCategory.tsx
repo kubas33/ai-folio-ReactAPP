@@ -15,7 +15,7 @@ import {
 import { Fragment, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-const fileTypes = ["JPEG", "PNG"];
+const fileTypes = ["JPEG", "JPG", "PNG"];
 
 export default function AddCategory() {
   const [selectedFiles, setSelectedFiles] = useState<{

@@ -25,7 +25,7 @@ import {
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-const fileTypes = ["JPEG", "PNG"];
+const fileTypes = ["JPEG", "PNG", "JPG"];
 
 interface SliderThumbWithTooltipProps {
   minValue: number;
