@@ -1,5 +1,4 @@
 import { Box, Text } from "@chakra-ui/react";
-import { GlobalStyleProps } from "@chakra-ui/theme-tools";
 
 type Props = {
   imageUrl: string;
@@ -8,7 +7,7 @@ type Props = {
 };
 
 export default function CategoryCard({ imageUrl, imageUrl_2, text }: Props) {
-  const onHover: GlobalStyleProps = {
+  const onHover = {
     backgroundImage: `url(${imageUrl_2})`,
     cursor: "pointer",
     transition: "background-image 0.2s ease-in-out 0.1s",
