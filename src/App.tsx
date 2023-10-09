@@ -1,4 +1,3 @@
-
 import "./theme/main.scss";
 import "react-multi-carousel/lib/styles.css";
 
@@ -13,24 +12,30 @@ import Tags from "./pages/Tags";
 import Models from "./pages/Models";
 import AddImageForm from "./components/AddImageForm";
 import AddImageFormBS from "./components/AddImageFormBS";
+import AddCategory from "./pages/AddCategory";
 
 function App() {
   return (
     <>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainLayout/>}  errorElement={<RouterError/>} >
-              <Route index={true} path="/home" element={<Home/>}/>
-              <Route path="/categories" element={<Categories/>}/>
-              <Route path="/models" element={<Models/>}/>
-              <Route path="/images" element={<Images/>}/>
-              <Route path="/tags" element={<Tags/>}/>
-              <Route path="/addbs" element={<AddImageFormBS/>}/>
-              <Route path="/add" element={<AddImageForm/>}/>
-            </Route>
-            <Route path="*" element={<PageNotFoundError/>} />
-          </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainLayout />}
+            errorElement={<RouterError />}
+          >
+            <Route index={true} path="/home" element={<Home />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/models" element={<Models />} />
+            <Route path="/images" element={<Images />} />
+            <Route path="/tags" element={<Tags />} />
+            <Route path="/addbs" element={<AddImageFormBS />} />
+            <Route path="/add" element={<AddImageForm />} />
+            <Route path="/categories/add" element={<AddCategory />} />
+          </Route>
+          <Route path="*" element={<PageNotFoundError />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
