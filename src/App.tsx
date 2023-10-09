@@ -13,8 +13,20 @@ import Models from "./pages/Models";
 import AddImageForm from "./components/AddImageForm";
 import AddImageFormBS from "./components/AddImageFormBS";
 import AddCategory from "./pages/AddCategory";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { useDispatch } from "react-redux";
+import { useEffect } from 'react';
+import { initFromLocalStorage } from "./store/authSlice";
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initFromLocalStorage())
+  }, []);
+
   return (
     <>
       <BrowserRouter>
@@ -25,6 +37,8 @@ function App() {
             errorElement={<RouterError />}
           >
             <Route index={true} path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/models" element={<Models />} />
             <Route path="/images" element={<Images />} />
