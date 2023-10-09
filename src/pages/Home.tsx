@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import ImageCard from "../components/ImageCard";
-import { Container, Row } from "react-bootstrap";
 import ImagesCarousel from "../components/ImagesCarousel";
 import CategoryProps from "../interfaces/CategoryProps";
 import { Box, Center, SimpleGrid } from "@chakra-ui/react";
@@ -88,18 +87,18 @@ export default function Home() {
   }, []);
   return (
     <>
-      <Center as='section'>
-        <Center maxWidth={"1440px"} flexDirection={'column'}>
+      <Center as="section">
+        <Center maxWidth={"1440px"} flexDirection={"column"}>
           <h1>AiFolio</h1>
           <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} gap={4}>
             {images.map((image) => (
               <ImageCard fileName={image.fileName} key={image.fileName} />
             ))}
           </SimpleGrid>
-        </Center >
+        </Center>
       </Center>
       <hr />
-      <Box as='section' className="categories-preview">
+      <Box as="section" className="categories-preview">
         {categories.map((category) => (
           <Fragment key={category.slug}>
             <h3>{category.name}</h3>
