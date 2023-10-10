@@ -1,7 +1,6 @@
-import { PropsWithChildren } from "react";
-import { Col, ButtonGroup, Button, Image } from "react-bootstrap";
+import { DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
+import { Box, ButtonGroup, Center, IconButton, Image } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
-import { AiOutlineEdit, AiOutlineEye, AiOutlineDelete } from "react-icons/ai";
 
 interface ImageCardProps extends PropsWithChildren {
   fileName: string;
@@ -10,48 +9,36 @@ interface ImageCardProps extends PropsWithChildren {
 export default function ImageCard(props: ImageCardProps) {
   const index: number = Math.floor(Math.random() * 100);
   return (
-    <div className="col align-self-center">
-      <div className="image-card align-midle">
+    <Center>
+      <Box className="image-card" verticalAlign={"midle"}>
         <Image
           src={`https://picsum.photos/800/600?random=${index}`}
           alt=""
-          rounded
+          rounded={"md"}
         />
-        <div className="context-menu-top">
-          <Button
-            variant="outline-light"
-            size="sm"
-            onClick={() => console.log("Context")}
+
+        <Box className="context-menu-top">
+          <IconButton
+            icon={<FiMoreVertical />}
+            aria-label={"more actions"}
+            colorScheme={"gray"}
+            variant={"solid"}
+            size={"xs"}
+          />
+        </Box>
+        <Box className="context-menu-bottom">
+          <ButtonGroup
+            isAttached
+            size={"xs"}
+            colorScheme={"gray"}
+            variant={"solid"}
           >
-            <FiMoreVertical />
-          </Button>
-        </div>
-        <div className="context-menu-bottom">
-          <ButtonGroup>
-            <Button
-              variant="outline-light"
-              size="sm"
-              onClick={() => console.log("Edit")}
-            >
-              <AiOutlineEdit />
-            </Button>
-            <Button
-              variant="outline-light"
-              size="sm"
-              onClick={() => console.log("View")}
-            >
-              <AiOutlineEye />
-            </Button>
-            <Button
-              variant="outline-light"
-              size="sm"
-              onClick={() => console.log("Delete")}
-            >
-              <AiOutlineDelete />
-            </Button>
+            <IconButton icon={<EditIcon />} aria-label={"edit"} />
+            <IconButton icon={<ViewIcon />} aria-label={"view"} />
+            <IconButton icon={<DeleteIcon />} aria-label={"delete"} />
           </ButtonGroup>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Center>
   );
 }
