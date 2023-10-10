@@ -1,6 +1,7 @@
 import { DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
 import { Box, ButtonGroup, Center, IconButton, Image } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
+import { PropsWithChildren } from "react";
 
 interface ImageCardProps extends PropsWithChildren {
   fileName: string;
