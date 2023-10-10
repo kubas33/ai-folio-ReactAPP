@@ -48,12 +48,17 @@ export default function Categories() {
     <Center>
       <Box width={"100%"} textAlign="center">
         <Heading py={10}>Browse categories</Heading>
-        <UnorderedList listStyleType={"none"}>
+        <UnorderedList listStyleType={"none"} px="0" mx="0">
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
             {categories.map((category) => {
               const index: number = Math.floor(Math.random() * 100);
               return (
-                <ListItem key={category} maxWidth={"400px"}>
+                <ListItem
+                  key={category}
+                  width="100%"
+                  maxWidth={"400px"}
+                  marginX="auto"
+                >
                   <CategoryCard
                     text={category}
                     imageUrl={`https://picsum.photos/600/600?random=${index}`}
