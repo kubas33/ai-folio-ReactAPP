@@ -15,11 +15,11 @@ export interface Credentials {
 }
 
 const login = (data: LoginForm): Promise<AxiosResponse<Credentials>> => {
-    return axios.post<Credentials>(`${process.env.REACT_APP_API_URL}/auth/login`, data)
+    return axios.post<Credentials>(`${import.meta.env.VITE_API_URL}/auth/login`, data)
 }
 
 const register = (data: RegisterForm): Promise<AxiosResponse<Credentials>> => {
-    return axios.post<Credentials>(`${process.env.REACT_APP_API_URL}/auth/register`, data)
+    return axios.post<Credentials>(`${import.meta.env.VITE_API_URL}/auth/register`, data)
 }
 
 export const AuthService = {
