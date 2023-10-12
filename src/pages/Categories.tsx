@@ -6,6 +6,7 @@ import {
   SimpleGrid,
   UnorderedList,
 } from "@chakra-ui/react";
+import { Fragment } from "react";
 import CategoryCard from "../components/CategoryCard";
 
 interface CategoriesProps {
@@ -46,19 +47,20 @@ const categories: string[] = [
 export default function Categories() {
   return (
     <Center>
-      <Box width={"100%"} textAlign="center">
+      <Box textAlign="center" width={"100%"}>
         <Heading py={10}>Browse categories</Heading>
-        <UnorderedList listStyleType={"none"} px="0" mx="0">
+        <UnorderedList
+          listStyleType={"none"}
+          px="0"
+          mx="auto" // Użyj mx="auto", aby centrować listę
+          maxW="1250px" // Ustaw maksymalną szerokość
+          className="categories-list"
+        >
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
             {categories.map((category) => {
               const index: number = Math.floor(Math.random() * 100);
               return (
-                <ListItem
-                  key={category}
-                  width="100%"
-                  maxWidth={"400px"}
-                  marginX="auto"
-                >
+                <ListItem key={category} maxWidth="400px" width="100%">
                   <CategoryCard
                     text={category}
                     imageUrl={`https://picsum.photos/600/600?random=${index}`}
