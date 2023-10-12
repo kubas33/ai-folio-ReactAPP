@@ -13,14 +13,15 @@ import {
   Text,
   useColorModeValue,
   Link,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authorize } from "../store/authSlice";
 import { AuthService } from "../services/auth.service";
-
+import { useForm } from "react-hook-form";
 
 export type RegisterForm = {
   name: string;
@@ -34,17 +35,21 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterForm>();
+
   const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     setIsRegistering(true);
 
     try {
       const res = await AuthService.login(data);
-      dispatch(
-        authorize(res.data),
-      );
+      dispatch(authorize(res.data));
       navigate("/home");
 
-      //TODO: TOAST 
+      //TODO: TOAST
     } catch (error) {
       //TODO: TOAST ERROR
     }
@@ -77,62 +82,79 @@ function Register() {
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={4}>
-            <HStack>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={4}>
               <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
+                <FormControl>
+                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <Input
+                    id="name"
+                    type="text"
+                    {...register("name", {
+                      required: "Name is required",
+                    })}
+                  />
+                  <FormErrorMessage>
+                    {errors.name && errors.name.message}
+                  </FormErrorMessage>
                 </FormControl>
               </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
-                <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Sign up
-              </Button>
+              <FormControl isRequired>
+                <FormLabel htmlFor="email">Email address</FormLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+              </FormControl>
+              <Stack spacing={10} pt={2}>
+                <Button
+                  loadingText="Submitting"
+                  size="lg"
+                  colorScheme="teal"
+                  type="submit"
+                >
+                  Sign up
+                </Button>
+              </Stack>
+              <Text align={"center"} pt={6}>
+                Already a user?{" "}
+                <Link color={"blue.400"} as={ReactRouterLink} to={"/login"}>
+                  Login
+                </Link>
+              </Text>
             </Stack>
-
-            <Text align={"center"} pt={6}>
-              Already a user?{" "}
-              <Link color={"blue.400"} as={ReactRouterLink} to={"/login"}>
-                Login
-              </Link>
-            </Text>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>

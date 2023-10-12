@@ -19,7 +19,7 @@ import { authorize } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { useState } from 'react';
+import { useState } from "react";
 import { AuthService } from "../services/auth.service";
 
 export type LoginForm = {
@@ -43,12 +43,10 @@ export default function Login() {
 
     try {
       const res = await AuthService.login(data);
-      dispatch(
-        authorize(res.data),
-      );
+      dispatch(authorize(res.data));
       navigate("/home");
 
-      //TODO: TOAST 
+      //TODO: TOAST
     } catch (error) {
       //TODO: TOAST ERROR
     }
@@ -82,7 +80,7 @@ export default function Login() {
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
-              <FormControl id="email" isInvalid={errors.email}>
+              <FormControl isInvalid={errors.email}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
                   id="email"
@@ -93,7 +91,7 @@ export default function Login() {
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl id="password">
+              <FormControl>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <Input
                   id="password"
@@ -112,17 +110,13 @@ export default function Login() {
                   <Checkbox>Remember me</Checkbox>
                   <Text color={"blue.400"}>Forgot password?</Text>
                 </Stack>
-                {isLogging ? <Spinner /> : <Button
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  type="submit"
-                >
-                  Sign in
-                </Button>}
-
+                {isLogging ? (
+                  <Spinner />
+                ) : (
+                  <Button colorScheme="teal" type="submit" size="lg">
+                    Sign in
+                  </Button>
+                )}
               </Stack>
             </Stack>
           </form>
