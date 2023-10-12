@@ -16,11 +16,41 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { authorize } from "../store/authSlice";
+import { AuthService } from "../services/auth.service";
+
+
+export type RegisterForm = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
+  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
+    setIsRegistering(true);
+
+    try {
+      const res = await AuthService.login(data);
+      dispatch(
+        authorize(res.data),
+      );
+      navigate("/home");
+
+      //TODO: TOAST 
+    } catch (error) {
+      //TODO: TOAST ERROR
+    }
+    setIsRegistering(false);
+    console.log(data);
+  };
   return (
     <Flex
       minH={"100vh"}

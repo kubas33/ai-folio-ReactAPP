@@ -32,6 +32,8 @@ export default function AddCategory() {
     });
   };
 
+  const bgColor = useColorModeValue("red.100", "red.900");
+
   return (
     <>
       <Heading as="h1" textAlign={"center"} p={6}>
@@ -63,7 +65,7 @@ export default function AddCategory() {
                     : "no file uploaded yet"}
                 </Text>
                 <Center
-                  bg={useColorModeValue("gray.100", "gray.900")}
+                  bg={bgColor}
                   p={4}
                   borderRadius={"md"} // Dodajemy zaokrąglenie do kontenera
                 >

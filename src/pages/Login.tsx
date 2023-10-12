@@ -9,6 +9,7 @@ import {
   Heading,
   Input,
   Link,
+  Spinner,
   Stack,
   Text,
   useColorModeValue,
@@ -18,8 +19,10 @@ import { authorize } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link as ReactRouterLink } from "react-router-dom";
+import { useState } from 'react';
+import { AuthService } from "../services/auth.service";
 
-type LoginForm = {
+export type LoginForm = {
   email: string;
   password: string;
 };
@@ -27,22 +30,30 @@ type LoginForm = {
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLogging, setIsLogging] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>();
 
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    setIsLogging(true);
+
+    try {
+      const res = await AuthService.login(data);
+      dispatch(
+        authorize(res.data),
+      );
+      navigate("/home");
+
+      //TODO: TOAST 
+    } catch (error) {
+      //TODO: TOAST ERROR
+    }
+    setIsLogging(false);
     console.log(data);
-    dispatch(
-      authorize({
-        email: data.email,
-        name: "Kuba",
-        token: "1234351232",
-      }),
-    );
-    navigate("/home");
   };
 
   return (
@@ -101,7 +112,7 @@ export default function Login() {
                   <Checkbox>Remember me</Checkbox>
                   <Text color={"blue.400"}>Forgot password?</Text>
                 </Stack>
-                <Button
+                {isLogging ? <Spinner /> : <Button
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{
@@ -110,7 +121,8 @@ export default function Login() {
                   type="submit"
                 >
                   Sign in
-                </Button>
+                </Button>}
+
               </Stack>
             </Stack>
           </form>
