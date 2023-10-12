@@ -40,15 +40,17 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     setIsLogging(true);
+    console.log('api_url ' + import.meta.env.VITE_API_URL);
 
     try {
       const res = await AuthService.login(data);
       dispatch(authorize(res.data));
-      navigate("/home");
+      navigate("/");
 
       //TODO: TOAST
     } catch (error) {
       //TODO: TOAST ERROR
+      console.error({ error });
     }
     setIsLogging(false);
     console.log(data);
