@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -21,7 +20,7 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authorize } from "../store/authSlice";
 import { AuthService } from "../services/auth.service";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export type RegisterForm = {
   name: string;
@@ -45,16 +44,16 @@ function Register() {
     setIsRegistering(true);
 
     try {
-      const res = await AuthService.login(data);
+      const res = await AuthService.register(data);
       dispatch(authorize(res.data));
-      navigate("/home");
+      navigate("/");
 
       //TODO: TOAST
     } catch (error) {
+      console.error({ error });
       //TODO: TOAST ERROR
     }
     setIsRegistering(false);
-    console.log(data);
   };
   return (
     <Flex
@@ -80,18 +79,20 @@ function Register() {
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
-          p={8}
+          py={8}
+          px={16}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
               <Box>
-                <FormControl>
+                <FormControl isInvalid={errors.name}>
                   <FormLabel htmlFor="name">Name</FormLabel>
                   <Input
                     id="name"
                     type="text"
                     {...register("name", {
                       required: "Name is required",
+                      minLength: { value: 3, message: `Minimum length is 3` }
                     })}
                   />
                   <FormErrorMessage>
@@ -99,7 +100,7 @@ function Register() {
                   </FormErrorMessage>
                 </FormControl>
               </Box>
-              <FormControl isRequired>
+              <FormControl isInvalid={errors.email} >
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
                   id="email"
@@ -112,7 +113,7 @@ function Register() {
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isInvalid={errors.password}>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <InputGroup>
                   <Input
@@ -120,6 +121,7 @@ function Register() {
                     type={showPassword ? "text" : "password"}
                     {...register("password", {
                       required: "Password is required",
+                      minLength: { value: 6, message: `Minimum length is 6` }
                     })}
                   />
                   <InputRightElement h={"full"}>
