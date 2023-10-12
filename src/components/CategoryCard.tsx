@@ -14,7 +14,7 @@ export default function CategoryCard({ imageUrl, imageUrl_2, text }: Props) {
   };
   return (
     <>
-      <Box position="relative" width={"100%"} aspectRatio="1">
+      <Box position="relative" aspectRatio="1" width="100%" maxWidth={"400px"}>
         <Box
           backgroundImage={`url(${imageUrl})`}
           backgroundSize="cover"
