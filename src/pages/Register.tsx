@@ -13,6 +13,7 @@ import {
   useColorModeValue,
   Link,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -21,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { authorize } from "../store/authSlice";
 import { AuthService } from "../services/auth.service";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Spinner } from "react-bootstrap";
 
 export type RegisterForm = {
   name: string;
@@ -33,6 +35,26 @@ function Register() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const toast = useToast();
+
+  const registerToast = () => {
+    toast({
+      title: "Account created.",
+      description: "We've created your account for you.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+  const failureToast = () => {
+    toast({
+      title: "Something went wrong :(",
+      description: "We couldn't create account for you.",
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
 
   const {
     register,
@@ -47,9 +69,11 @@ function Register() {
       const res = await AuthService.register(data);
       dispatch(authorize(res.data));
       navigate("/");
+      registerToast();
 
       //TODO: TOAST
     } catch (error) {
+      failureToast();
       console.error({ error });
       //TODO: TOAST ERROR
     }
@@ -85,14 +109,14 @@ function Register() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
               <Box>
-                <FormControl isInvalid={errors.name}>
+                <FormControl isInvalid={!!errors.name}>
                   <FormLabel htmlFor="name">Name</FormLabel>
                   <Input
                     id="name"
                     type="text"
                     {...register("name", {
                       required: "Name is required",
-                      minLength: { value: 3, message: `Minimum length is 3` }
+                      minLength: { value: 3, message: `Minimum length is 3` },
                     })}
                   />
                   <FormErrorMessage>
@@ -100,7 +124,7 @@ function Register() {
                   </FormErrorMessage>
                 </FormControl>
               </Box>
-              <FormControl isInvalid={errors.email} >
+              <FormControl isInvalid={!!errors.email}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
                   id="email"
@@ -113,7 +137,7 @@ function Register() {
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.password}>
+              <FormControl isInvalid={!!errors.password}>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <InputGroup>
                   <Input
@@ -121,7 +145,7 @@ function Register() {
                     type={showPassword ? "text" : "password"}
                     {...register("password", {
                       required: "Password is required",
-                      minLength: { value: 6, message: `Minimum length is 6` }
+                      minLength: { value: 6, message: `Minimum length is 6` },
                     })}
                   />
                   <InputRightElement h={"full"}>
@@ -140,14 +164,18 @@ function Register() {
                 </FormErrorMessage>
               </FormControl>
               <Stack spacing={10} pt={2}>
-                <Button
-                  loadingText="Submitting"
-                  size="lg"
-                  colorScheme="teal"
-                  type="submit"
-                >
-                  Sign up
-                </Button>
+                {isRegistering ? (
+                  <Spinner />
+                ) : (
+                  <Button
+                    loadingText="Submitting"
+                    size="lg"
+                    colorScheme="teal"
+                    type="submit"
+                  >
+                    Sign up
+                  </Button>
+                )}
               </Stack>
               <Text align={"center"} pt={6}>
                 Already a user?{" "}
