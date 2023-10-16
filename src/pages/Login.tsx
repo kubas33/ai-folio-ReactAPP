@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { authorize } from "../store/authSlice";
@@ -31,6 +32,27 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLogging, setIsLogging] = useState(false);
+  const toast = useToast();
+
+  const loginSuccessToast = () => {
+    toast({
+      title: "Logged in successfully",
+      description: "Welcome to our service!",
+      status: "success",
+      duration: 5000, // Display time for the toast (in milliseconds)
+      isClosable: true, // Allowing the user to close the toast
+    });
+  };
+
+  const loginServerErrorToast = () => {
+    toast({
+      title: "Login failed",
+      description: "A server error occurred. Please try again later.",
+      status: "error",
+      duration: 5000, // Display time for the toast (in milliseconds)
+      isClosable: true, // Allowing the user to close the toast
+    });
+  };
 
   const {
     register,
@@ -40,16 +62,15 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     setIsLogging(true);
-    console.log('api_url ' + import.meta.env.VITE_API_URL);
+    console.log("api_url " + import.meta.env.VITE_API_URL);
 
     try {
       const res = await AuthService.login(data);
       dispatch(authorize(res.data));
       navigate("/");
-
-      //TODO: TOAST
+      loginSuccessToast();
     } catch (error) {
-      //TODO: TOAST ERROR
+      loginServerErrorToast();
       console.error({ error });
     }
     setIsLogging(false);
@@ -82,7 +103,7 @@ export default function Login() {
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
-              <FormControl isInvalid={errors.email}>
+              <FormControl isInvalid={!!errors.email}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
                   id="email"
