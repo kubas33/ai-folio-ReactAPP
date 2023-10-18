@@ -142,8 +142,8 @@ function MainNavbar() {
             </Stack>
           </Box>
         ) : null}
+        <hr />
       </Box>
-      <hr />
     </>
   );
 }

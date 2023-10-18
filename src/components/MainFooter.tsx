@@ -68,6 +68,7 @@ export default function MainFooter() {
       bg={useColorModeValue("gray.200", "gray.700")}
       color={useColorModeValue("gray.700", "gray.200")}
       marginTop={8}
+      as="footer"
     >
       <Container
         as={Stack}

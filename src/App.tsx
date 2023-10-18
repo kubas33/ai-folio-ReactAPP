@@ -16,15 +16,15 @@ import AddCategory from "./pages/AddCategory";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { useDispatch } from "react-redux";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { initFromLocalStorage } from "./store/authSlice";
+import ImageDetail from "./pages/ImageDetail";
 
 function App() {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initFromLocalStorage())
+    dispatch(initFromLocalStorage());
   }, []);
 
   return (
@@ -43,6 +43,7 @@ function App() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/models" element={<Models />} />
             <Route path="/images" element={<Images />} />
+            <Route path="/images/1" element={<ImageDetail />} />
             <Route path="/tags" element={<Tags />} />
             <Route path="/addbs" element={<AddImageFormBS />} />
             <Route path="/add" element={<AddImageForm />} />
