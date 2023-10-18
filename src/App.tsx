@@ -18,7 +18,7 @@ import Register from "./pages/Register";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { initFromLocalStorage } from "./store/authSlice";
-import ImageDetail from "./pages/ImageDetail";
+import ImageDetail from "./pages/ImageDetailNew";
 
 function App() {
   const dispatch = useDispatch();
