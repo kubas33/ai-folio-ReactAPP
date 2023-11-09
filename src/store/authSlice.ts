@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Credentials } from "../services/auth.service";
+import { DateTime } from "luxon";
 
 
 const initialState : Credentials = {
@@ -42,24 +43,30 @@ export const authSlice = createSlice(
 
             localStorage.removeItem('AUTH_DATA');
         },
-        initFromLocalStorage: (state) => {
+        restoreUserFromLocalStorage: (state) => {
             const data: string|null =localStorage.getItem("AUTH_DATA");
             if (data != null) {
-                const payload: Credentials = JSON.parse(data);
+                const currentUser: Credentials = JSON.parse(data);
+                if (currentUser.token.expiresAt != null) {
+                    const tokenExpireDate = DateTime.fromISO(currentUser.token.expiresAt);
 
-                state.id = payload.id;
-                state.name = payload.name;
-                state.email = payload.email;
-                state.token = payload.token;
+                    const now = DateTime.now();
+                    if (now > tokenExpireDate)
+                    return;
+
+                    state.id = currentUser.id;
+                    state.name = currentUser.name;
+                    state.email = currentUser.email;
+                    state.token = currentUser.token;
+
+                }
+            } else {
+                console.log("Brak danych w local storage.");
             }
         }
     }
 })
 
-export const {
-    authorize,
-    logout,
-    initFromLocalStorage
-} = authSlice.actions
+export const authActions = authSlice.actions;
 
 export default authSlice.reducer;

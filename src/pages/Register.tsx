@@ -19,7 +19,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authorize } from "../store/authSlice";
+import { authActions } from "../store/authSlice";
 import { AuthService } from "../services/auth.service";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Spinner } from "react-bootstrap";
@@ -67,7 +67,7 @@ function Register() {
 
     try {
       const res = await AuthService.register(data);
-      dispatch(authorize(res.data));
+      dispatch(authActions.authorize(res.data));
       navigate("/");
       registerToast();
 

@@ -7,6 +7,7 @@ import {
   Flex,
   HStack,
   IconButton,
+  LinkProps,
   ListItem,
   Menu,
   MenuButton,
@@ -21,11 +22,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { AuthState, logout } from "../store/authSlice";
+import { authActions } from "../store/authSlice";
 import { RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { Credentials } from "../services/auth.service";
+import IsAuth from '../core/auth/IsAuth';
 
-const Links: string[] = ["Home", "Models", "Images", "Tags", "Categories"];
+const UnprotectedLinks: string[] = ["Home",];
+const ProtectedLinks: string[] = ["Models", "Images", "Tags", "Categories"];
 
 const NavLink = (props: LinkProps) => {
   const { children } = props;
@@ -52,9 +56,9 @@ function MainNavbar() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { email }: AuthState = useSelector((state: RootState) => state.auth);
+  const { email }: Credentials = useSelector((state: RootState) => state.auth);
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(authActions.logout());
   };
   return (
     <>
@@ -75,12 +79,20 @@ function MainNavbar() {
                 spacing={4}
                 display={{ base: "none", md: "flex" }}
               >
+                //TODO: isAuth
                 <UnorderedList listStyleType={"none"} m={0}>
-                  {Links.map((link) => (
+                  {UnprotectedLinks.map((link) => (
                     <ListItem key={link} display={"inline-list-item"} px={2}>
                       <NavLink>{link}</NavLink>
                     </ListItem>
                   ))}
+                  <IsAuth>
+                    {ProtectedLinks.map((link) => (
+                      <ListItem key={link} display={"inline-list-item"} px={2}>
+                        <NavLink>{link}</NavLink>
+                      </ListItem>
+                    ))}
+                  </IsAuth>
                 </UnorderedList>
               </HStack>
             </HStack>
@@ -109,8 +121,8 @@ function MainNavbar() {
                           {email}
                         </Text>
                         <MenuDivider />
-                        <MenuItem>Profile</MenuItem>
-                        <MenuItem>Settings</MenuItem>
+                        <MenuItem as={ReactRouterLink} to={"/user-profile"}>Profile</MenuItem>
+                        <MenuItem as={ReactRouterLink} to={"/user-settings"}>Settings</MenuItem>
                         <MenuItem>Smth</MenuItem>
                         <MenuDivider />
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
